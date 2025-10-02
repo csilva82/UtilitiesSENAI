@@ -255,10 +255,10 @@
       }
       
       const mensagem = 
-        `🔔 *Nova Ocorrência*\n\n` +
-        `📍 *Setor:* ${setor}\n` +
-        `⚠️ *Motivo:* ${motivoPre}\n` +
-        (motivoDetalhe ? `📝 *Detalhes:* ${motivoDetalhe}` : '');
+        `*Nova Ocorrencia*\n\n` +
+        `*Setor:* ${setor}\n` +
+        `*Motivo:* ${motivoPre}\n` +
+        (motivoDetalhe ? `*Detalhes:* ${motivoDetalhe}` : '');
       
       const numeroWhatsApp = "5511999999999";
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
