@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SENAI-Utilities</title>
+  <title>Enviar WhatsApp</title>
   <style>
     * {
       margin: 0;
@@ -119,6 +119,14 @@
       padding-right: 40px;
     }
 
+    select#setor {
+      appearance: auto;
+      background-image: none;
+      padding-right: 14px;
+      height: auto;
+      overflow-y: scroll;
+    }
+
     .btn-submit {
       width: 100%;
       padding: 16px;
@@ -194,7 +202,7 @@
 <body>
   <div class="container">
     <div class="logo-container">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/SENAI_logo_2024.png" alt="SENAI Logo" class="logo" onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block';">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/SENAI_logo_2024.png/320px-SENAI_logo_2024.png" alt="SENAI Logo" class="logo" onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block';">
       <div class="logo-fallback">
         <span class="senai-logo">SENAI</span>
       </div>
@@ -208,18 +216,21 @@
       <label for="setor">Setor</label>
       <select id="setor">
         <option value="">Selecione o setor</option>
-        <option value="Sala 101A">Sala 101B</option>
-        <option value="Sala 102A">Sala 102B</option>
+        <option value="Sala 101B">Sala 101A</option>
+        <option value="Sala 102B">Sala 102A</option>
         <option value="Sala 103A">Sala 103A</option>
         <option value="Sala 104A">Sala 104A</option>
+
         <option value="Sala 101B">Sala 101B</option>
         <option value="Sala 102B">Sala 102B</option>
-        <option value="Sala 103B">Sala 103A</option>
-        <option value="Sala 104B">Sala 104A</option>
-        <option value="Sala 101C">Sala 101B</option>
-        <option value="Sala 102C">Sala 102B</option>
-        <option value="Sala 103C">Sala 103A</option>
-        <option value="Sala 104C">Sala 104A</option>
+        <option value="Sala 103A">Sala 103B</option>
+        <option value="Sala 104A">Sala 104B</option>
+
+        <option value="Sala 101B">Sala 101C</option>
+        <option value="Sala 102B">Sala 102C</option>
+        <option value="Sala 103A">Sala 103C</option>
+        <option value="Sala 104A">Sala 104C</option>
+        
       </select>
     </div>
 
@@ -268,7 +279,7 @@
         `*Motivo:* ${motivoPre}\n` +
         (motivoDetalhe ? `*Detalhes:* ${motivoDetalhe}` : '');
       
-      const numeroWhatsApp = "553598328921";
+      const numeroWhatsApp = "5535998328921";
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
       
       window.open(url, "_blank");
