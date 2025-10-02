@@ -2,69 +2,277 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Enviar WhatsApp</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      animation: slideUp 0.5s ease;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .logo {
+      max-width: 250px;
+      width: 100%;
+      height: auto;
+    }
+
+    .logo-fallback {
+      display: none;
+    }
+
+    .senai-logo {
+      font-size: 48px;
+      font-weight: 900;
+      color: #005EB8;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0, 94, 184, 0.2);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      color: #444;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: white;
+      color: #333;
+    }
+
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .whatsapp-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      border-left: 4px solid #c33;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      .logo {
+        max-width: 200px;
+      }
+
+      .senai-logo {
+        font-size: 36px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      select, input[type="text"] {
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      .btn-submit {
+        padding: 14px;
+        font-size: 15px;
+      }
+    }
+  </style>
 </head>
-<body style="font-family: Arial; text-align: center; padding: 50px;">
-  <h1>Formulário de Ocorrência</h1>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/SENAI_logo_2024.png/320px-SENAI_logo_2024.png" alt="SENAI Logo" class="logo" onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block';">
+      <div class="logo-fallback">
+        <span class="senai-logo">SENAI</span>
+      </div>
+    </div>
+    <h1>📋 Formulário de Ocorrência</h1>
+    <p class="subtitle">Preencha os dados para reportar um problema</p>
+    
+    <div class="error-message" id="errorMessage"></div>
 
-  <p>ID:</p>
-  <input type="text" id="id" placeholder="Digite o ID">
+    <div class="form-group">
+      <label for="setor">Setor</label>
+      <select id="setor">
+        <option value="">Selecione o setor</option>
+        <option value="Sala 101B">Sala 101B</option>
+        <option value="Sala 102B">Sala 102B</option>
+        <option value="Sala 103A">Sala 103A</option>
+        <option value="Sala 104A">Sala 104A</option>
+      </select>
+    </div>
 
-  <p>Setor:</p>
-  <select id="setor">
-    <option value="">--Selecione o setor--</option>
-    <option value="Sala 101B">Sala 101B</option>
-    <option value="Sala 102B">Sala 102B</option>
-    <option value="Sala 103A">Sala 103A</option>
-    <option value="Sala 104A">Sala 104A</option>
-  </select>
+    <div class="form-group">
+      <label for="motivoPre">Motivo</label>
+      <select id="motivoPre">
+        <option value="">Selecione o motivo</option>
+        <option value="Vazamento de água">Vazamento de água</option>
+        <option value="Ventilador quebrado">Ventilador quebrado</option>
+        <option value="Porta danificada">Porta danificada</option>
+        <option value="Luz queimada">Luz queimada</option>
+      </select>
+    </div>
 
-  <p>Motivo (pré-definido):</p>
-  <select id="motivoPre">
-    <option value="">--Selecione o motivo--</option>
-    <option value="Vazamento de água">Vazamento de água</option>
-    <option value="Ventilador quebrado">Ventilador quebrado</option>
-    <option value="Porta danificada">Porta danificada</option>
-    <option value="Luz queimada">Luz queimada</option>
-  </select>
+    <div class="form-group">
+      <label for="motivoDetalhe">Detalhes adicionais (opcional)</label>
+      <input type="text" id="motivoDetalhe" placeholder="Descreva mais detalhes sobre o problema">
+    </div>
 
-  <p>Motivo (detalhes adicionais):</p>
-  <input type="text" id="motivoDetalhe" placeholder="Descreva o motivo detalhado" style="width: 70%;">
-
-  <br><br>
-  <button onclick="enviarWhatsApp()" style="padding: 10px 20px; font-size: 16px;">
-    Enviar pelo WhatsApp
-  </button>
+    <button class="btn-submit" onclick="enviarWhatsApp()">
+      <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      Enviar pelo WhatsApp
+    </button>
+  </div>
 
   <script>
     function enviarWhatsApp() {
-      const id = document.getElementById("id").value;
       const setor = document.getElementById("setor").value;
       const motivoPre = document.getElementById("motivoPre").value;
       const motivoDetalhe = document.getElementById("motivoDetalhe").value;
-
-      if (!id || !setor || !motivoPre) {
-        alert("Preencha o ID, Setor e Motivo pré-definido!");
+      const errorMessage = document.getElementById("errorMessage");
+      
+      errorMessage.style.display = "none";
+      
+      if (!setor || !motivoPre) {
+        errorMessage.textContent = "⚠️ Por favor, preencha o Setor e o Motivo!";
+        errorMessage.style.display = "block";
         return;
       }
-
-      // Monta a mensagem
+      
       const mensagem = 
-        `Novo registro de ocorrência:\n` +
-        `ID: ${id}\n` +
-        `Setor: ${setor}\n` +
-        `Motivo: ${motivoPre}\n` +
-        (motivoDetalhe ? `Detalhes: ${motivoDetalhe}` : '');
-
-      // Número de WhatsApp pré-definido (exemplo: +5511999999999)
-      const numeroWhatsApp = "5535998328921";
-
-      // URL do WhatsApp
+        `🔔 *Nova Ocorrência*\n\n` +
+        `📍 *Setor:* ${setor}\n` +
+        `⚠️ *Motivo:* ${motivoPre}\n` +
+        (motivoDetalhe ? `📝 *Detalhes:* ${motivoDetalhe}` : '');
+      
+      const numeroWhatsApp = "5511999999999";
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-
-      // Abre o WhatsApp (web ou app)
+      
       window.open(url, "_blank");
     }
+
+    document.getElementById("setor").addEventListener("change", function() {
+      document.getElementById("errorMessage").style.display = "none";
+    });
+
+    document.getElementById("motivoPre").addEventListener("change", function() {
+      document.getElementById("errorMessage").style.display = "none";
+    });
   </script>
 </body>
 </html>
