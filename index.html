@@ -2,27 +2,68 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Hello QR</title>
+  <title>Salvar no GitHub</title>
 </head>
 <body style="font-family: Arial; text-align: center; padding: 50px;">
-  <h1>Hello World!</h1>
-  <p>Digite algo para compartilhar no WhatsApp:</p>
+  <h1>Salvar no bd.json do GitHub</h1>
 
-  <input type="text" id="mensagem" placeholder="Digite aqui..." style="width: 70%; padding: 8px;">
+  <p>ID:</p>
+  <input type="text" id="id">
+
+  <p>Setor:</p>
+  <input type="text" id="setor">
+
+  <p>Motivo:</p>
+  <input type="text" id="motivo">
+
   <br><br>
-  <button onclick="compartilharWhatsApp()" style="padding: 10px 20px; font-size: 16px;">
-    Compartilhar no WhatsApp
-  </button>
+  <button onclick="salvar()">Salvar</button>
 
   <script>
-    function compartilharWhatsApp() {
-      let texto = document.getElementById("mensagem").value;
-      if (texto.trim() === "") {
-        alert("Digite algo primeiro!");
+    async function salvar() {
+      const usuario = "csilva82";   // seu usuário
+      const repo = "hello-qr";      // seu repositório
+      const arquivo = "bd.json";    // arquivo no repo
+      const branch = "main";        // branch principal
+      const token = "SEU_TOKEN_AQUI"; // ⚠️ nunca deixar exposto em produção
+
+      const id = document.getElementById("id").value;
+      const setor = document.getElementById("setor").value;
+      const motivo = document.getElementById("motivo").value;
+
+      if (!id || !setor || !motivo) {
+        alert("Preencha todos os campos!");
         return;
       }
-      let url = "https://wa.me/?text=" + encodeURIComponent(texto);
-      window.open(url, "_blank");
+
+      // 1. Buscar o bd.json atual do GitHub
+      let resp = await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${arquivo}?ref=${branch}`, {
+        headers: { Authorization: `token ${token}` }
+      });
+      let data = await resp.json();
+
+      // 2. Decodificar o conteúdo do arquivo
+      let conteudo = JSON.parse(atob(data.content));
+
+      // 3. Adicionar o novo registro
+      conteudo.push({ id, setor, motivo });
+
+      // 4. Subir de volta para o GitHub
+      await fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/${arquivo}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `token ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: "Novo registro adicionado",
+          content: btoa(JSON.stringify(conteudo, null, 2)), // em Base64
+          sha: data.sha,
+          branch: branch
+        })
+      });
+
+      alert("Registro salvo no GitHub!");
     }
   </script>
 </body>
