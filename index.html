@@ -5,16 +5,31 @@
   <title>Enviar WhatsApp</title>
 </head>
 <body style="font-family: Arial; text-align: center; padding: 50px;">
-  <h1>Formulário de Dados</h1>
+  <h1>Formulário de Ocorrência</h1>
 
   <p>ID:</p>
   <input type="text" id="id" placeholder="Digite o ID">
 
   <p>Setor:</p>
-  <input type="text" id="setor" placeholder="Digite o Setor">
+  <select id="setor">
+    <option value="">--Selecione o setor--</option>
+    <option value="Sala 101B">Sala 101B</option>
+    <option value="Sala 102B">Sala 102B</option>
+    <option value="Sala 103A">Sala 103A</option>
+    <option value="Sala 104A">Sala 104A</option>
+  </select>
 
-  <p>Motivo:</p>
-  <input type="text" id="motivo" placeholder="Digite o Motivo">
+  <p>Motivo (pré-definido):</p>
+  <select id="motivoPre">
+    <option value="">--Selecione o motivo--</option>
+    <option value="Vazamento de água">Vazamento de água</option>
+    <option value="Ventilador quebrado">Ventilador quebrado</option>
+    <option value="Porta danificada">Porta danificada</option>
+    <option value="Luz queimada">Luz queimada</option>
+  </select>
+
+  <p>Motivo (detalhes adicionais):</p>
+  <input type="text" id="motivoDetalhe" placeholder="Descreva o motivo detalhado" style="width: 70%;">
 
   <br><br>
   <button onclick="enviarWhatsApp()" style="padding: 10px 20px; font-size: 16px;">
@@ -25,18 +40,27 @@
     function enviarWhatsApp() {
       const id = document.getElementById("id").value;
       const setor = document.getElementById("setor").value;
-      const motivo = document.getElementById("motivo").value;
+      const motivoPre = document.getElementById("motivoPre").value;
+      const motivoDetalhe = document.getElementById("motivoDetalhe").value;
 
-      if (!id || !setor || !motivo) {
-        alert("Preencha todos os campos!");
+      if (!id || !setor || !motivoPre) {
+        alert("Preencha o ID, Setor e Motivo pré-definido!");
         return;
       }
 
       // Monta a mensagem
-      const mensagem = `Novo registro:\nID: ${id}\nSetor: ${setor}\nMotivo: ${motivo}`;
+      const mensagem = 
+        `Novo registro de ocorrência:\n` +
+        `ID: ${id}\n` +
+        `Setor: ${setor}\n` +
+        `Motivo: ${motivoPre}\n` +
+        (motivoDetalhe ? `Detalhes: ${motivoDetalhe}` : '');
 
-      // Codifica a mensagem para URL
-      const url = "https://wa.me/?text=" + encodeURIComponent(mensagem);
+      // Número de WhatsApp pré-definido (exemplo: +5511999999999)
+      const numeroWhatsApp = "5511999999999";
+
+      // URL do WhatsApp
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
 
       // Abre o WhatsApp (web ou app)
       window.open(url, "_blank");
