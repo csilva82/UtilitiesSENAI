@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello QR</title>
+</head>
+<body style="font-family: Arial; text-align: center; padding: 50px;">
+  <h1>Hello World!</h1>
+  <p>Digite algo para compartilhar no WhatsApp:</p>
+
+  <input type="text" id="mensagem" placeholder="Digite aqui..." style="width: 70%; padding: 8px;">
+  <br><br>
+  <button onclick="compartilharWhatsApp()" style="padding: 10px 20px; font-size: 16px;">
+    Compartilhar no WhatsApp
+  </button>
+
+  <script>
+    function compartilharWhatsApp() {
+      let texto = document.getElementById("mensagem").value;
+      if (texto.trim() === "") {
+        alert("Digite algo primeiro!");
+        return;
+      }
+      let url = "https://wa.me/?text=" + encodeURIComponent(texto);
+      window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>
